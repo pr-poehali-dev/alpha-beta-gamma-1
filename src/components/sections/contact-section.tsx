@@ -2,12 +2,18 @@ import { useReveal } from "@/hooks/use-reveal"
 import { useState, type FormEvent } from "react"
 import { MagneticButton } from "@/components/magnetic-button"
 import Icon from "@/components/ui/icon"
+import emailjs from "@emailjs/browser"
+
+const EMAILJS_SERVICE_ID = "service_itj5uuf"
+const EMAILJS_TEMPLATE_ID = "template_slv7c9u"
+const EMAILJS_PUBLIC_KEY = "iXB7iDp15vAd5NJnp"
 
 export function ContactSection() {
   const { ref, isVisible } = useReveal(0.3)
   const [formData, setFormData] = useState({ name: "", district: "", message: "" })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
+  const [submitError, setSubmitError] = useState(false)
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -17,12 +23,29 @@ export function ContactSection() {
     }
 
     setIsSubmitting(true)
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    setIsSubmitting(false)
-    setSubmitSuccess(true)
-    setFormData({ name: "", district: "", message: "" })
+    setSubmitError(false)
 
-    setTimeout(() => setSubmitSuccess(false), 5000)
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name: formData.name,
+          district: formData.district,
+          message: formData.message,
+          to_email: "szanin613@gmail.com",
+        },
+        EMAILJS_PUBLIC_KEY
+      )
+      setSubmitSuccess(true)
+      setFormData({ name: "", district: "", message: "" })
+      setTimeout(() => setSubmitSuccess(false), 5000)
+    } catch {
+      setSubmitError(true)
+      setTimeout(() => setSubmitError(false), 5000)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -162,7 +185,10 @@ export function ContactSection() {
                   {isSubmitting ? "Отправка..." : "Отправить предложение"}
                 </MagneticButton>
                 {submitSuccess && (
-                  <p className="mt-3 text-center font-mono text-sm text-foreground/80">Предложение отправлено!</p>
+                  <p className="mt-3 text-center font-mono text-sm text-foreground/80">Предложение отправлено! Спасибо 🏙️</p>
+                )}
+                {submitError && (
+                  <p className="mt-3 text-center font-mono text-sm text-red-400">Ошибка отправки. Попробуйте ещё раз.</p>
                 )}
               </div>
             </form>
