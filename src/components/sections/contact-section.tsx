@@ -78,7 +78,7 @@ export function ContactSection() {
               >
                 <div className="mb-1 flex items-center gap-2">
                   <Icon name="MapPin" className="h-3 w-3 text-foreground/60" />
-                  <span className="font-mono text-xs text-foreground/60">Охватываем города</span>
+                  <span className="font-mono text-xs text-foreground/60">География</span>
                 </div>
                 <p className="text-base text-foreground md:text-2xl">
                   Россия и СНГ
@@ -143,7 +143,7 @@ export function ContactSection() {
                 }`}
                 style={{ transitionDelay: "350ms" }}
               >
-                <label className="mb-1 block font-mono text-xs text-foreground/60 md:mb-2">Район / город</label>
+                <label className="mb-1 block font-mono text-xs text-foreground/60 md:mb-2">Город / район</label>
                 <input
                   type="text"
                   value={formData.district}
@@ -167,7 +167,7 @@ export function ContactSection() {
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   required
                   className="w-full border-b border-foreground/30 bg-transparent py-1.5 text-sm text-foreground placeholder:text-foreground/40 focus:border-foreground/50 focus:outline-none md:py-2 md:text-base"
-                  placeholder="Опишите, что нужно улучшить в вашем городе..."
+                  placeholder="Расскажите о вашем городе и задачах..."
                 />
               </div>
 
@@ -182,7 +182,7 @@ export function ContactSection() {
                   size="lg"
                   className="w-full disabled:opacity-50"
                 >
-                  {isSubmitting ? "Отправка..." : "Отправить предложение"}
+                  {isSubmitting ? "Отправка..." : "Отправить"}
                 </MagneticButton>
                 {submitSuccess && (
                   <p className="mt-3 text-center font-mono text-sm text-foreground/80">Предложение отправлено! Спасибо 🏙️</p>
